@@ -194,6 +194,10 @@ if !exists("g:Gtags_OpenQuickfixWindow")
     let g:Gtags_OpenQuickfixWindow = 1
 endif
 
+if !exists("g:Gtags_OpenFirstResultImmediately")
+    let g:Gtags_OpenFirstResultImmediately = 0
+endif
+
 if !exists("g:Gtags_VerticalWindow")
     let g:Gtags_VerticalWindow = 0
 endif
@@ -395,7 +399,11 @@ function! s:ExecLoad(option, long_option, pattern)
     " Parse the output of 'global -x or -t' and show in the quickfix window.
     let l:efm_org = &efm
     let &efm = g:Gtags_Efm
-    cexpr! l:result
+    if g:Gtags_OpenFirstResultImmediately == 1
+        cexpr! l:result
+    else
+        cgetexpr l:result
+    endif
     let &efm = l:efm_org
 endfunction
 
